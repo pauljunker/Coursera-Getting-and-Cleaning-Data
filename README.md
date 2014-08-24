@@ -12,17 +12,18 @@ The run_analysis.R program has a fairly large amount of inline documentation in 
 
 1. The raw data is loaded into the following data frames: 
 
-* df_x_test
-* df_y_test
-* df_subject_test
-* df_x_train
-* df_y_train
-* df_subject_train
-* activity_labels
-* variable_names
+  * df_x_test
+  * df_y_test
+  * df_subject_test
+  * df_x_train
+  * df_y_train
+  * df_subject_train
+  * activity_labels
+  * variable_names
 
 2. The unwanted characters are removed from the variable descriptions in "variable_names" via the command:
 
-* variable_names$columndesc <- gsub("-|_|\\,|\\(|\\)","",variable_names$columndesc) #REMOVES UNWANTED CHARACTERS
-* variable_names$columndesc <- tolower(variable_names$columndesc)			  #MAKES ALL LOWER CASE
+  * variable_names$columndesc <- gsub("-|_|\\,|\\(|\\)","",variable_names$columndesc) #REMOVES UNWANTED CHARACTERS
+  * variable_names$columndesc <- tolower(variable_names$columndesc)			  #MAKES ALL LOWER CASE
+
 
