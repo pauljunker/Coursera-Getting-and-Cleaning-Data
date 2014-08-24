@@ -21,6 +21,34 @@ The run_analysis.R program has a fairly large amount of inline documentation in 
   * variable_names
 2. The unwanted characters are removed from the variable descriptions in "variable_names" via the command:
   * variable_names$columndesc <- gsub("-|_|\\,|\\(|\\)","",variable_names$columndesc) #REMOVES UNWANTED CHARACTERS
+3. Next the the variable descriptions are made all lowercase:
   * variable_names$columndesc <- tolower(variable_names$columndesc)			  #MAKES ALL LOWER CASE
+4. The column names in df_x_test and df_x_train are updated with the names form variable_names:
+  * colnames(df_x_test) <- variable_names$columndesc
+  * colnames(df_x_train) <- variable_names$columndesc
+  * THIS COMPLETES STEP 4 (I found it easier to do at this point)
+5. The dataframes are all combined into one dataframe named data_orig:
+  * df_x_test <- cbind(df_x_test, df_y_test) 		#STEP ONE - COMBINING TEST DATA
+  * df_x_test <- cbind(df_x_test, df_subject_test)	#STEP TWO - COMBINING TEST DATA
+  * df_x_train <- cbind(df_x_train, df_y_train)		#STEP ONE - COMBINING TRAIN DATA
+  * df_x_train <- cbind(df_x_train, df_subject_train)	#STEP TWO - COMBINING TRAIN DATA
+  * data_orig <- rbind(df_x_test, df_x_train)		#COMBINE DATA INTO ONE DATA FRAME
+  * THIS COMPLETES STEP 1
+6. The columns with just mean and std are extracted and put into the data frame data_mean_std:
+  * column_numbers_mean_std <- grep("[Mm]ean|[Ss][Tt][Dd]|^activitycode|^subjectcode", names(data_orig))
+  * data_mean_std <- data_orig[column_numbers_mean_std]
+  * THIS COMPLETES STEP 2
+7. The activity labels are added to the data and everything is put into the dataframe data_merged
+  * data_merged <- merge(data_mean_std,activity_labels,by.x="activitycode",by.y="activitycode",all=TRUE)
+  * THIS COMPLETES STEP 3
+  * STEP 4 WAS ALREADY COMPLETED
+8. The data averaged and aggregated by subject and activity and put into data_output:
+  * data_output <- aggregate(data_merged[2:87], list(subject = data_merged$subjectcode, activity = data_merged$activitydesc),mean)
+9. Finally, the data is output to a text file:
+  * write.table(data_output, file="junker_project.txt", row.name=FALSE)
+
+Thank you for reviewing my work. I look forward to any suggestions you might have!
+
+
 
 
