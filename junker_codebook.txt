@@ -1,0 +1,730 @@
+DATA DICTIONARY - PAUL JUNKER'S PROJECT										
+										
+"Note, to make VARIABLES and DATA FRAMES easier to read, I include underscores. "										
+"However, for ""COLUMN"" names, I follow the professor's preference of no underscores."										
+										
+FILE VARIABLES										
+These are not very important. Theya are just variables to hold the source file names.										
+	VARIABLE			FILE NAME						
+	f_x_test			./UCI HAR Dataset/test/X_test.txt						
+	f_y_test			./UCI HAR Dataset/test/y_test.txt						
+	f_subject_test			./UCI HAR Dataset/test/subject_test.txt						
+	f_x_train			./UCI HAR Dataset/train/X_train.txt						
+	f_y_train			./UCI HAR Dataset/train/y_train.txt						
+	f_subject_train			./UCI HAR Dataset/train/subject_train.txt						
+	f_activity_labels		./UCI HAR Dataset/activity_labels.txt						
+	f_variable_names		./UCI HAR Dataset/features.txt						
+										
+DATA FRAMES TO HOLD RAW SOURCE DATA (column in bottom portion of this document)										
+	df_x_test			An intermediate data frame the holds raw data for the file ""X_test.txt"""						
+	df_y_test 			An intermediate data frame the holds raw data for the file ""y_test.txt"""						
+	df_subject_test 		An intermediate data frame the holds raw data for the file ""subject_test.txt"""						
+	df_x_train 			An intermediate data frame the holds raw data for the file ""X_train.txt"""						
+	df_y_train 			An intermediate data frame the holds raw data for the file ""Y_train.txt"""						
+	df_subject_train 		An intermediate data frame the holds raw data for the file ""subject_train.txt"""						
+	activity_labels 		An intermediate data frame the holds raw data for the file ""activity_labels.txt"""						
+	variable_names 			An intermediate data frame the holds raw data for the file ""features.txt"""						
+										
+DATA FRAMES TO HOLD RAW PROCESSED DATA (column in bottom portion of this document)										
+	data_orig			Holds merged and binded data from ""X_test.txt"", ""y_test.txt"", ""subject_test.txt"", and ""subject_train.txt""."						
+	column_numbers_mean_std 	A VECTOR that holds the numbers of columns containing ""mean"" and ""std"" in their names."						
+	data_mean_std			Holds only columns with ""mean"" and ""std"" in their names (and also ""subjectcode"" and ""activitycode needed for future steps)."						
+	data_merged			This adds the activity labels to the ""data_mean_std"" data frame"						
+	data_output			This contains the summary data that is output as the final step of the assignment						
+										
+COLUMN DEFINITIONS: df_x_test and df_x_train										
+	Contains the raw source data with measurements from the accelerometer and gyroscope									
+		activitycode		merged from df_activity_labels						
+		subjectcode		merged from df_subject_test & df_subject_train						
+		tbodyaccmeanx		numeric in scientific notation						
+		tbodyaccmeany		numeric in scientific notation						
+		tbodyaccmeanz		numeric in scientific notation						
+		tbodyaccstdx		numeric in scientific notation						
+		tbodyaccstdy		numeric in scientific notation						
+		tbodyaccstdz		numeric in scientific notation						
+		tbodyaccmadx		numeric in scientific notation						
+		tbodyaccmady		numeric in scientific notation						
+		tbodyaccmadz		numeric in scientific notation						
+		tbodyaccmaxx		numeric in scientific notation						
+		tbodyaccmaxy		numeric in scientific notation						
+		tbodyaccmaxz		numeric in scientific notation						
+		tbodyaccminx		numeric in scientific notation						
+		tbodyaccminy		numeric in scientific notation						
+		tbodyaccminz		numeric in scientific notation						
+		tbodyaccsma		numeric in scientific notation						
+		tbodyaccenergyx		numeric in scientific notation						
+		tbodyaccenergyy		numeric in scientific notation						
+		tbodyaccenergyz		numeric in scientific notation						
+		tbodyacciqrx		numeric in scientific notation						
+		tbodyacciqry		numeric in scientific notation						
+		tbodyacciqrz		numeric in scientific notation						
+		tbodyaccentropyx	numeric in scientific notation						
+		tbodyaccentropyy	numeric in scientific notation						
+		tbodyaccentropyz	numeric in scientific notation						
+		tbodyaccarcoeffx1	numeric in scientific notation						
+		tbodyaccarcoeffx2	numeric in scientific notation						
+		tbodyaccarcoeffx3	numeric in scientific notation						
+		tbodyaccarcoeffx4	numeric in scientific notation						
+		tbodyaccarcoeffy1	numeric in scientific notation						
+		tbodyaccarcoeffy2	numeric in scientific notation						
+		tbodyaccarcoeffy3	numeric in scientific notation						
+		tbodyaccarcoeffy4	numeric in scientific notation						
+		tbodyaccarcoeffz1	numeric in scientific notation						
+		tbodyaccarcoeffz2	numeric in scientific notation						
+		tbodyaccarcoeffz3	numeric in scientific notation						
+		tbodyaccarcoeffz4	numeric in scientific notation						
+		tbodyacccorrelationxy	numeric in scientific notation						
+		tbodyacccorrelationxz	numeric in scientific notation						
+		tbodyacccorrelationyz	numeric in scientific notation						
+		tgravityaccmeanx	numeric in scientific notation						
+		tgravityaccmeany	numeric in scientific notation						
+		tgravityaccmeanz	numeric in scientific notation						
+		tgravityaccstdx		numeric in scientific notation						
+		tgravityaccstdy		numeric in scientific notation						
+		tgravityaccstdz		numeric in scientific notation						
+		tgravityaccmadx		numeric in scientific notation						
+		tgravityaccmady		numeric in scientific notation						
+		tgravityaccmadz		numeric in scientific notation						
+		tgravityaccmaxx		numeric in scientific notation						
+		tgravityaccmaxy		numeric in scientific notation						
+		tgravityaccmaxz		numeric in scientific notation						
+		tgravityaccminx		numeric in scientific notation						
+		tgravityaccminy		numeric in scientific notation						
+		tgravityaccminz		numeric in scientific notation						
+		tgravityaccsma		numeric in scientific notation						
+		tgravityaccenergyx	numeric in scientific notation						
+		tgravityaccenergyy	numeric in scientific notation						
+		tgravityaccenergyz	numeric in scientific notation						
+		tgravityacciqrx		numeric in scientific notation						
+		tgravityacciqry		numeric in scientific notation						
+		tgravityacciqrz		numeric in scientific notation						
+		tgravityaccentropyx	numeric in scientific notation						
+		tgravityaccentropyy	numeric in scientific notation						
+		tgravityaccentropyz	numeric in scientific notation						
+		tgravityaccarcoeffx1	numeric in scientific notation						
+		tgravityaccarcoeffx2	numeric in scientific notation						
+		tgravityaccarcoeffx3	numeric in scientific notation						
+		tgravityaccarcoeffx4	numeric in scientific notation						
+		tgravityaccarcoeffy1	numeric in scientific notation						
+		tgravityaccarcoeffy2	numeric in scientific notation						
+		tgravityaccarcoeffy3	numeric in scientific notation						
+		tgravityaccarcoeffy4	numeric in scientific notation						
+		tgravityaccarcoeffz1	numeric in scientific notation						
+		tgravityaccarcoeffz2	numeric in scientific notation						
+		tgravityaccarcoeffz3	numeric in scientific notation						
+		tgravityaccarcoeffz4	numeric in scientific notation						
+		tgravityacccorrelationxynumeric in scientific notation						
+		tgravityacccorrelationxznumeric in scientific notation						
+		tgravityacccorrelationyznumeric in scientific notation						
+		tbodyaccjerkmeanx	numeric in scientific notation						
+		tbodyaccjerkmeany	numeric in scientific notation						
+		tbodyaccjerkmeanz	numeric in scientific notation						
+		tbodyaccjerkstdx	numeric in scientific notation						
+		tbodyaccjerkstdy	numeric in scientific notation						
+		tbodyaccjerkstdz	numeric in scientific notation						
+		tbodyaccjerkmadx	numeric in scientific notation						
+		tbodyaccjerkmady	numeric in scientific notation						
+		tbodyaccjerkmadz	numeric in scientific notation						
+		tbodyaccjerkmaxx	numeric in scientific notation						
+		tbodyaccjerkmaxy	numeric in scientific notation						
+		tbodyaccjerkmaxz	numeric in scientific notation						
+		tbodyaccjerkminx	numeric in scientific notation						
+		tbodyaccjerkminy	numeric in scientific notation						
+		tbodyaccjerkminz	numeric in scientific notation						
+		tbodyaccjerksma		numeric in scientific notation						
+		tbodyaccjerkenergyx	numeric in scientific notation						
+		tbodyaccjerkenergyy	numeric in scientific notation						
+		tbodyaccjerkenergyz	numeric in scientific notation						
+		tbodyaccjerkiqrx	numeric in scientific notation						
+		tbodyaccjerkiqry	numeric in scientific notation						
+		tbodyaccjerkiqrz	numeric in scientific notation						
+		tbodyaccjerkentropyx	numeric in scientific notation						
+		tbodyaccjerkentropyy	numeric in scientific notation						
+		tbodyaccjerkentropyz	numeric in scientific notation						
+		tbodyaccjerkarcoeffx1	numeric in scientific notation						
+		tbodyaccjerkarcoeffx2	numeric in scientific notation						
+		tbodyaccjerkarcoeffx3	numeric in scientific notation						
+		tbodyaccjerkarcoeffx4	numeric in scientific notation						
+		tbodyaccjerkarcoeffy1	numeric in scientific notation						
+		tbodyaccjerkarcoeffy2	numeric in scientific notation						
+		tbodyaccjerkarcoeffy3	numeric in scientific notation						
+		tbodyaccjerkarcoeffy4	numeric in scientific notation						
+		tbodyaccjerkarcoeffz1	numeric in scientific notation						
+		tbodyaccjerkarcoeffz2	numeric in scientific notation						
+		tbodyaccjerkarcoeffz3	numeric in scientific notation						
+		tbodyaccjerkarcoeffz4	numeric in scientific notation						
+		tbodyaccjerkcorrelationxy	numeric in scientific notation						
+		tbodyaccjerkcorrelationxz	numeric in scientific notation						
+		tbodyaccjerkcorrelationyz	numeric in scientific notation						
+		tbodygyromeanx		numeric in scientific notation						
+		tbodygyromeany		numeric in scientific notation						
+		tbodygyromeanz		numeric in scientific notation						
+		tbodygyrostdx		numeric in scientific notation						
+		tbodygyrostdy		numeric in scientific notation						
+		tbodygyrostdz		numeric in scientific notation						
+		tbodygyromadx		numeric in scientific notation						
+		tbodygyromady		numeric in scientific notation						
+		tbodygyromadz		numeric in scientific notation						
+		tbodygyromaxx		numeric in scientific notation						
+		tbodygyromaxy		numeric in scientific notation						
+		tbodygyromaxz		numeric in scientific notation						
+		tbodygyrominx		numeric in scientific notation						
+		tbodygyrominy		numeric in scientific notation						
+		tbodygyrominz		numeric in scientific notation						
+		tbodygyrosma		numeric in scientific notation						
+		tbodygyroenergyx	numeric in scientific notation						
+		tbodygyroenergyy	numeric in scientific notation						
+		tbodygyroenergyz	numeric in scientific notation						
+		tbodygyroiqrx		numeric in scientific notation						
+		tbodygyroiqry		numeric in scientific notation						
+		tbodygyroiqrz		numeric in scientific notation						
+		tbodygyroentropyx	numeric in scientific notation						
+		tbodygyroentropyy	numeric in scientific notation						
+		tbodygyroentropyz	numeric in scientific notation						
+		tbodygyroarcoeffx1	numeric in scientific notation						
+		tbodygyroarcoeffx2	numeric in scientific notation						
+		tbodygyroarcoeffx3	numeric in scientific notation						
+		tbodygyroarcoeffx4	numeric in scientific notation						
+		tbodygyroarcoeffy1	numeric in scientific notation						
+		tbodygyroarcoeffy2	numeric in scientific notation						
+		tbodygyroarcoeffy3	numeric in scientific notation						
+		tbodygyroarcoeffy4	umeric in scientific notation						
+		tbodygyroarcoeffz1	numeric in scientific notation						
+		tbodygyroarcoeffz2	numeric in scientific notation						
+		tbodygyroarcoeffz3	numeric in scientific notation						
+		tbodygyroarcoeffz4	numeric in scientific notation						
+		tbodygyrocorrelationxy	numeric in scientific notation						
+		tbodygyrocorrelationxz	numeric in scientific notation						
+		tbodygyrocorrelationyz	numeric in scientific notation						
+		tbodygyrojerkmeanx	numeric in scientific notation						
+		tbodygyrojerkmeany	numeric in scientific notation						
+		tbodygyrojerkmeanz	numeric in scientific notation						
+		tbodygyrojerkstdx	numeric in scientific notation						
+		tbodygyrojerkstdy	numeric in scientific notation						
+		tbodygyrojerkstdz	numeric in scientific notation						
+		tbodygyrojerkmadx	numeric in scientific notation						
+		tbodygyrojerkmady	numeric in scientific notation						
+		tbodygyrojerkmadz	numeric in scientific notation						
+		tbodygyrojerkmaxx	numeric in scientific notation						
+		tbodygyrojerkmaxy	numeric in scientific notation						
+		tbodygyrojerkmaxz	numeric in scientific notation						
+		tbodygyrojerkminx	numeric in scientific notation						
+		tbodygyrojerkminy	numeric in scientific notation						
+		tbodygyrojerkminz	numeric in scientific notation						
+		tbodygyrojerksma	numeric in scientific notation						
+		tbodygyrojerkenergyx	numeric in scientific notation						
+		tbodygyrojerkenergyy	numeric in scientific notation						
+		tbodygyrojerkenergyz	numeric in scientific notation						
+		tbodygyrojerkiqrx	numeric in scientific notation						
+		tbodygyrojerkiqry	numeric in scientific notation						
+		tbodygyrojerkiqrz	numeric in scientific notation						
+		tbodygyrojerkentropyx	numeric in scientific notation						
+		tbodygyrojerkentropyy	numeric in scientific notation						
+		tbodygyrojerkentropyz	numeric in scientific notation						
+		tbodygyrojerkarcoeffx1	numeric in scientific notation						
+		tbodygyrojerkarcoeffx2	numeric in scientific notation						
+		tbodygyrojerkarcoeffx3	numeric in scientific notation						
+		tbodygyrojerkarcoeffx4	numeric in scientific notation						
+		tbodygyrojerkarcoeffy1	numeric in scientific notation						
+		tbodygyrojerkarcoeffy2	numeric in scientific notation						
+		tbodygyrojerkarcoeffy3	numeric in scientific notation						
+		tbodygyrojerkarcoeffy4	numeric in scientific notation						
+		tbodygyrojerkarcoeffz1	numeric in scientific notation						
+		tbodygyrojerkarcoeffz2	numeric in scientific notation						
+		tbodygyrojerkarcoeffz3	numeric in scientific notation						
+		tbodygyrojerkarcoeffz4	numeric in scientific notation						
+		tbodygyrojerkcorrelationxy	numeric in scientific notation						
+		tbodygyrojerkcorrelationxz	numeric in scientific notation						
+		tbodygyrojerkcorrelationyz	numeric in scientific notation						
+		tbodyaccmagmean		numeric in scientific notation						
+		tbodyaccmagstd		numeric in scientific notation						
+		tbodyaccmagmad		numeric in scientific notation						
+		tbodyaccmagmax		numeric in scientific notation						
+		tbodyaccmagmin		numeric in scientific notation						
+		tbodyaccmagsma		numeric in scientific notation						
+		tbodyaccmagenergy	numeric in scientific notation						
+		tbodyaccmagiqr		numeric in scientific notation						
+		tbodyaccmagentropy	numeric in scientific notation						
+		tbodyaccmagarcoeff1	numeric in scientific notation						
+		tbodyaccmagarcoeff2	numeric in scientific notation						
+		tbodyaccmagarcoeff3	numeric in scientific notation						
+		tbodyaccmagarcoeff4	numeric in scientific notation						
+		tgravityaccmagmean	numeric in scientific notation						
+		tgravityaccmagstd	numeric in scientific notation						
+		tgravityaccmagmad	numeric in scientific notation						
+		tgravityaccmagmax	numeric in scientific notation						
+		tgravityaccmagmin	numeric in scientific notation						
+		tgravityaccmagsma	numeric in scientific notation						
+		tgravityaccmagenergy	numeric in scientific notation						
+		tgravityaccmagiqr	numeric in scientific notation						
+		tgravityaccmagentropy	numeric in scientific notation						
+		tgravityaccmagarcoeff1	numeric in scientific notation						
+		tgravityaccmagarcoeff2	numeric in scientific notation						
+		tgravityaccmagarcoeff3	numeric in scientific notation						
+		tgravityaccmagarcoeff4	numeric in scientific notation						
+		tbodyaccjerkmagmean	numeric in scientific notation						
+		tbodyaccjerkmagstd	numeric in scientific notation						
+		tbodyaccjerkmagmad	numeric in scientific notation						
+		tbodyaccjerkmagmax	numeric in scientific notation						
+		tbodyaccjerkmagmin	numeric in scientific notation						
+		tbodyaccjerkmagsma	numeric in scientific notation						
+		tbodyaccjerkmagenergy	numeric in scientific notation						
+		tbodyaccjerkmagiqr	numeric in scientific notation						
+		tbodyaccjerkmagentropy	numeric in scientific notation						
+		tbodyaccjerkmagarcoeff1	numeric in scientific notation						
+		tbodyaccjerkmagarcoeff2	numeric in scientific notation						
+		tbodyaccjerkmagarcoeff3	numeric in scientific notation						
+		tbodyaccjerkmagarcoeff4	numeric in scientific notation						
+		tbodygyromagmean	numeric in scientific notation						
+		tbodygyromagstd		numeric in scientific notation						
+		tbodygyromagmad		numeric in scientific notation						
+		tbodygyromagmax		numeric in scientific notation						
+		tbodygyromagmin		numeric in scientific notation						
+		tbodygyromagsma		numeric in scientific notation						
+		tbodygyromagenergy	numeric in scientific notation						
+		tbodygyromagiqr		numeric in scientific notation						
+		tbodygyromagentropy	numeric in scientific notation						
+		tbodygyromagarcoeff1	numeric in scientific notation						
+		tbodygyromagarcoeff2	numeric in scientific notation						
+		tbodygyromagarcoeff3	numeric in scientific notation						
+		tbodygyromagarcoeff4	numeric in scientific notation						
+		tbodygyrojerkmagmean	numeric in scientific notation						
+		tbodygyrojerkmagstd	numeric in scientific notation						
+		tbodygyrojerkmagmad	numeric in scientific notation						
+		tbodygyrojerkmagmax	numeric in scientific notation						
+		tbodygyrojerkmagmin	numeric in scientific notation						
+		tbodygyrojerkmagsma	numeric in scientific notation						
+		tbodygyrojerkmagenergy	numeric in scientific notation						
+		tbodygyrojerkmagiqr	numeric in scientific notation						
+		tbodygyrojerkmagentropy	numeric in scientific notation						
+		tbodygyrojerkmagarcoeff1	numeric in scientific notation						
+		tbodygyrojerkmagarcoeff2	numeric in scientific notation						
+		tbodygyrojerkmagarcoeff3	numeric in scientific notation						
+		tbodygyrojerkmagarcoeff4	numeric in scientific notation						
+		fbodyaccmeanx		numeric in scientific notation						
+		fbodyaccmeany		numeric in scientific notation						
+		fbodyaccmeanz		numeric in scientific notation						
+		fbodyaccstdx		numeric in scientific notation						
+		fbodyaccstdy		numeric in scientific notation						
+		fbodyaccstdz		numeric in scientific notation						
+		fbodyaccmadx		numeric in scientific notation						
+		fbodyaccmady		numeric in scientific notation						
+		fbodyaccmadz		numeric in scientific notation						
+		fbodyaccmaxx		numeric in scientific notation						
+		fbodyaccmaxy		numeric in scientific notation						
+		fbodyaccmaxz		numeric in scientific notation						
+		fbodyaccminx		numeric in scientific notation						
+		fbodyaccminy		numeric in scientific notation						
+		fbodyaccminz		numeric in scientific notation						
+		fbodyaccsma		numeric in scientific notation						
+		fbodyaccenergyx		numeric in scientific notation						
+		fbodyaccenergyy		numeric in scientific notation						
+		fbodyaccenergyz		numeric in scientific notation						
+		fbodyacciqrx		numeric in scientific notation						
+		fbodyacciqry		numeric in scientific notation						
+		fbodyacciqrz		numeric in scientific notation						
+		fbodyaccentropyx		numeric in scientific notation						
+		fbodyaccentropyy		numeric in scientific notation						
+		fbodyaccentropyz		numeric in scientific notation						
+		fbodyaccmaxindsx		numeric in scientific notation						
+		fbodyaccmaxindsy		numeric in scientific notation						
+		fbodyaccmaxindsz		numeric in scientific notation						
+		fbodyaccmeanfreqx		numeric in scientific notation						
+		fbodyaccmeanfreqy		numeric in scientific notation						
+		fbodyaccmeanfreqz		numeric in scientific notation						
+		fbodyaccskewnessx		numeric in scientific notation						
+		fbodyacckurtosisx		numeric in scientific notation						
+		fbodyaccskewnessy		numeric in scientific notation						
+		fbodyacckurtosisy		numeric in scientific notation						
+		fbodyaccskewnessz		numeric in scientific notation						
+		fbodyacckurtosisz		numeric in scientific notation						
+		fbodyaccbandsenergy18		numeric in scientific notation						
+		fbodyaccbandsenergy916		numeric in scientific notation						
+		fbodyaccbandsenergy1724		numeric in scientific notation						
+		fbodyaccbandsenergy2532		numeric in scientific notation						
+		fbodyaccbandsenergy3340		numeric in scientific notation						
+		fbodyaccbandsenergy4148		numeric in scientific notation						
+		fbodyaccbandsenergy4956		numeric in scientific notation						
+		fbodyaccbandsenergy5764		numeric in scientific notation						
+		fbodyaccbandsenergy116		numeric in scientific notation						
+		fbodyaccbandsenergy1732		numeric in scientific notation						
+		fbodyaccbandsenergy3348		numeric in scientific notation						
+		fbodyaccbandsenergy4964		numeric in scientific notation						
+		fbodyaccbandsenergy124		numeric in scientific notation						
+		fbodyaccbandsenergy2548		numeric in scientific notation						
+		fbodyaccbandsenergy18		numeric in scientific notation						
+		fbodyaccbandsenergy916		numeric in scientific notation						
+		fbodyaccbandsenergy1724		numeric in scientific notation						
+		fbodyaccbandsenergy2532		numeric in scientific notation						
+		fbodyaccbandsenergy3340		numeric in scientific notation						
+		fbodyaccbandsenergy4148		numeric in scientific notation						
+		fbodyaccbandsenergy4956		numeric in scientific notation						
+		fbodyaccbandsenergy5764		numeric in scientific notation						
+		fbodyaccbandsenergy116		numeric in scientific notation						
+		fbodyaccbandsenergy1732		numeric in scientific notation						
+		fbodyaccbandsenergy3348		numeric in scientific notation						
+		fbodyaccbandsenergy4964		numeric in scientific notation						
+		fbodyaccbandsenergy124		numeric in scientific notation						
+		fbodyaccbandsenergy2548		numeric in scientific notation						
+		fbodyaccbandsenergy18		numeric in scientific notation						
+		fbodyaccbandsenergy916		numeric in scientific notation						
+		fbodyaccbandsenergy1724		numeric in scientific notation						
+		fbodyaccbandsenergy2532		numeric in scientific notation						
+		fbodyaccbandsenergy3340		numeric in scientific notation						
+		fbodyaccbandsenergy4148		numeric in scientific notation						
+		fbodyaccbandsenergy4956		numeric in scientific notation						
+		fbodyaccbandsenergy5764		numeric in scientific notation						
+		fbodyaccbandsenergy116		numeric in scientific notation						
+		fbodyaccbandsenergy1732		numeric in scientific notation						
+		fbodyaccbandsenergy3348		numeric in scientific notation						
+		fbodyaccbandsenergy4964		numeric in scientific notation						
+		fbodyaccbandsenergy124		numeric in scientific notation						
+		fbodyaccbandsenergy2548		numeric in scientific notation						
+		fbodyaccjerkmeanx		numeric in scientific notation						
+		fbodyaccjerkmeany		numeric in scientific notation						
+		fbodyaccjerkmeanz		numeric in scientific notation						
+		fbodyaccjerkstdx		numeric in scientific notation						
+		fbodyaccjerkstdy		numeric in scientific notation						
+		fbodyaccjerkstdz		numeric in scientific notation						
+		fbodyaccjerkmadx		numeric in scientific notation						
+		fbodyaccjerkmady		numeric in scientific notation						
+		fbodyaccjerkmadz		numeric in scientific notation						
+		fbodyaccjerkmaxx		numeric in scientific notation						
+		fbodyaccjerkmaxy		numeric in scientific notation						
+		fbodyaccjerkmaxz		numeric in scientific notation						
+		fbodyaccjerkminx		numeric in scientific notation						
+		fbodyaccjerkminy		numeric in scientific notation						
+		fbodyaccjerkminz		numeric in scientific notation						
+		fbodyaccjerksma		numeric in scientific notation						
+		fbodyaccjerkenergyx		numeric in scientific notation						
+		fbodyaccjerkenergyy		numeric in scientific notation						
+		fbodyaccjerkenergyz		numeric in scientific notation						
+		fbodyaccjerkiqrx		numeric in scientific notation						
+		fbodyaccjerkiqry		numeric in scientific notation						
+		fbodyaccjerkiqrz		numeric in scientific notation						
+		fbodyaccjerkentropyx		numeric in scientific notation						
+		fbodyaccjerkentropyy		numeric in scientific notation						
+		fbodyaccjerkentropyz		numeric in scientific notation						
+		fbodyaccjerkmaxindsx		numeric in scientific notation						
+		fbodyaccjerkmaxindsy		numeric in scientific notation						
+		fbodyaccjerkmaxindsz		numeric in scientific notation						
+		fbodyaccjerkmeanfreqx		numeric in scientific notation						
+		fbodyaccjerkmeanfreqy		numeric in scientific notation						
+		fbodyaccjerkmeanfreqz		numeric in scientific notation						
+		fbodyaccjerkskewnessx		numeric in scientific notation						
+		fbodyaccjerkkurtosisx		numeric in scientific notation						
+		fbodyaccjerkskewnessy		numeric in scientific notation						
+		fbodyaccjerkkurtosisy		numeric in scientific notation						
+		fbodyaccjerkskewnessz		numeric in scientific notation						
+		fbodyaccjerkkurtosisz		numeric in scientific notation						
+		fbodyaccjerkbandsenergy18		numeric in scientific notation						
+		fbodyaccjerkbandsenergy916		numeric in scientific notation						
+		fbodyaccjerkbandsenergy1724		numeric in scientific notation						
+		fbodyaccjerkbandsenergy2532		numeric in scientific notation						
+		fbodyaccjerkbandsenergy3340		numeric in scientific notation						
+		fbodyaccjerkbandsenergy4148		numeric in scientific notation						
+		fbodyaccjerkbandsenergy4956		numeric in scientific notation						
+		fbodyaccjerkbandsenergy5764		numeric in scientific notation						
+		fbodyaccjerkbandsenergy116		numeric in scientific notation						
+		fbodyaccjerkbandsenergy1732		numeric in scientific notation						
+		fbodyaccjerkbandsenergy3348		numeric in scientific notation						
+		fbodyaccjerkbandsenergy4964		numeric in scientific notation						
+		fbodyaccjerkbandsenergy124		numeric in scientific notation						
+		fbodyaccjerkbandsenergy2548		numeric in scientific notation						
+		fbodyaccjerkbandsenergy18		numeric in scientific notation						
+		fbodyaccjerkbandsenergy916		numeric in scientific notation						
+		fbodyaccjerkbandsenergy1724		numeric in scientific notation						
+		fbodyaccjerkbandsenergy2532		numeric in scientific notation						
+		fbodyaccjerkbandsenergy3340		numeric in scientific notation						
+		fbodyaccjerkbandsenergy4148		numeric in scientific notation						
+		fbodyaccjerkbandsenergy4956		numeric in scientific notation						
+		fbodyaccjerkbandsenergy5764		numeric in scientific notation						
+		fbodyaccjerkbandsenergy116		numeric in scientific notation						
+		fbodyaccjerkbandsenergy1732		numeric in scientific notation						
+		fbodyaccjerkbandsenergy3348		numeric in scientific notation						
+		fbodyaccjerkbandsenergy4964		numeric in scientific notation						
+		fbodyaccjerkbandsenergy124		numeric in scientific notation						
+		fbodyaccjerkbandsenergy2548		numeric in scientific notation						
+		fbodyaccjerkbandsenergy18		numeric in scientific notation						
+		fbodyaccjerkbandsenergy916		numeric in scientific notation						
+		fbodyaccjerkbandsenergy1724		numeric in scientific notation						
+		fbodyaccjerkbandsenergy2532		numeric in scientific notation						
+		fbodyaccjerkbandsenergy3340		numeric in scientific notation						
+		fbodyaccjerkbandsenergy4148		numeric in scientific notation						
+		fbodyaccjerkbandsenergy4956		numeric in scientific notation						
+		fbodyaccjerkbandsenergy5764		numeric in scientific notation						
+		fbodyaccjerkbandsenergy116		numeric in scientific notation						
+		fbodyaccjerkbandsenergy1732		numeric in scientific notation						
+		fbodyaccjerkbandsenergy3348		numeric in scientific notation						
+		fbodyaccjerkbandsenergy4964		numeric in scientific notation						
+		fbodyaccjerkbandsenergy124		numeric in scientific notation						
+		fbodyaccjerkbandsenergy2548		numeric in scientific notation						
+		fbodygyromeanx		numeric in scientific notation						
+		fbodygyromeany		numeric in scientific notation						
+		fbodygyromeanz		numeric in scientific notation						
+		fbodygyrostdx		numeric in scientific notation						
+		fbodygyrostdy		numeric in scientific notation						
+		fbodygyrostdz		numeric in scientific notation						
+		fbodygyromadx		numeric in scientific notation						
+		fbodygyromady		numeric in scientific notation						
+		fbodygyromadz		numeric in scientific notation						
+		fbodygyromaxx		numeric in scientific notation						
+		fbodygyromaxy		numeric in scientific notation						
+		fbodygyromaxz		numeric in scientific notation						
+		fbodygyrominx		numeric in scientific notation						
+		fbodygyrominy		numeric in scientific notation						
+		fbodygyrominz		numeric in scientific notation						
+		fbodygyrosma		numeric in scientific notation						
+		fbodygyroenergyx		numeric in scientific notation						
+		fbodygyroenergyy		numeric in scientific notation						
+		fbodygyroenergyz		numeric in scientific notation						
+		fbodygyroiqrx		numeric in scientific notation						
+		fbodygyroiqry		numeric in scientific notation						
+		fbodygyroiqrz		numeric in scientific notation						
+		fbodygyroentropyx		numeric in scientific notation						
+		fbodygyroentropyy		numeric in scientific notation						
+		fbodygyroentropyz		numeric in scientific notation						
+		fbodygyromaxindsx		numeric in scientific notation						
+		fbodygyromaxindsy		numeric in scientific notation						
+		fbodygyromaxindsz		numeric in scientific notation						
+		fbodygyromeanfreqx		numeric in scientific notation						
+		fbodygyromeanfreqy		numeric in scientific notation						
+		fbodygyromeanfreqz		numeric in scientific notation						
+		fbodygyroskewnessx		numeric in scientific notation						
+		fbodygyrokurtosisx		numeric in scientific notation						
+		fbodygyroskewnessy		numeric in scientific notation						
+		fbodygyrokurtosisy		numeric in scientific notation						
+		fbodygyroskewnessz		numeric in scientific notation						
+		fbodygyrokurtosisz		numeric in scientific notation						
+		fbodygyrobandsenergy18		numeric in scientific notation						
+		fbodygyrobandsenergy916		numeric in scientific notation						
+		fbodygyrobandsenergy1724		numeric in scientific notation						
+		fbodygyrobandsenergy2532		numeric in scientific notation						
+		fbodygyrobandsenergy3340		numeric in scientific notation						
+		fbodygyrobandsenergy4148		numeric in scientific notation						
+		fbodygyrobandsenergy4956		numeric in scientific notation						
+		fbodygyrobandsenergy5764		numeric in scientific notation						
+		fbodygyrobandsenergy116		numeric in scientific notation						
+		fbodygyrobandsenergy1732		numeric in scientific notation						
+		fbodygyrobandsenergy3348		numeric in scientific notation						
+		fbodygyrobandsenergy4964		numeric in scientific notation						
+		fbodygyrobandsenergy124		numeric in scientific notation						
+		fbodygyrobandsenergy2548		numeric in scientific notation						
+		fbodygyrobandsenergy18		numeric in scientific notation						
+		fbodygyrobandsenergy916		numeric in scientific notation						
+		fbodygyrobandsenergy1724		numeric in scientific notation						
+		fbodygyrobandsenergy2532		numeric in scientific notation						
+		fbodygyrobandsenergy3340		numeric in scientific notation						
+		fbodygyrobandsenergy4148		numeric in scientific notation						
+		fbodygyrobandsenergy4956		numeric in scientific notation						
+		fbodygyrobandsenergy5764		numeric in scientific notation						
+		fbodygyrobandsenergy116		numeric in scientific notation						
+		fbodygyrobandsenergy1732		numeric in scientific notation						
+		fbodygyrobandsenergy3348		numeric in scientific notation						
+		fbodygyrobandsenergy4964		numeric in scientific notation						
+		fbodygyrobandsenergy124		numeric in scientific notation						
+		fbodygyrobandsenergy2548		numeric in scientific notation						
+		fbodygyrobandsenergy18		numeric in scientific notation						
+		fbodygyrobandsenergy916		numeric in scientific notation						
+		fbodygyrobandsenergy1724		numeric in scientific notation						
+		fbodygyrobandsenergy2532		numeric in scientific notation						
+		fbodygyrobandsenergy3340		numeric in scientific notation						
+		fbodygyrobandsenergy4148		numeric in scientific notation						
+		fbodygyrobandsenergy4956		numeric in scientific notation						
+		fbodygyrobandsenergy5764		numeric in scientific notation						
+		fbodygyrobandsenergy116		numeric in scientific notation						
+		fbodygyrobandsenergy1732		numeric in scientific notation						
+		fbodygyrobandsenergy3348		numeric in scientific notation						
+		fbodygyrobandsenergy4964		numeric in scientific notation						
+		fbodygyrobandsenergy124		numeric in scientific notation						
+		fbodygyrobandsenergy2548		numeric in scientific notation						
+		fbodyaccmagmean		numeric in scientific notation						
+		fbodyaccmagstd		numeric in scientific notation						
+		fbodyaccmagmad		numeric in scientific notation						
+		fbodyaccmagmax		numeric in scientific notation						
+		fbodyaccmagmin		numeric in scientific notation						
+		fbodyaccmagsma		numeric in scientific notation						
+		fbodyaccmagenergy		numeric in scientific notation						
+		fbodyaccmagiqr		numeric in scientific notation						
+		fbodyaccmagentropy		numeric in scientific notation						
+		fbodyaccmagmaxinds		numeric in scientific notation						
+		fbodyaccmagmeanfreq		numeric in scientific notation						
+		fbodyaccmagskewness		numeric in scientific notation						
+		fbodyaccmagkurtosis		numeric in scientific notation						
+		fbodybodyaccjerkmagmean		numeric in scientific notation						
+		fbodybodyaccjerkmagstd		numeric in scientific notation						
+		fbodybodyaccjerkmagmad		numeric in scientific notation						
+		fbodybodyaccjerkmagmax		numeric in scientific notation						
+		fbodybodyaccjerkmagmin		numeric in scientific notation						
+		fbodybodyaccjerkmagsma		numeric in scientific notation						
+		fbodybodyaccjerkmagenergy		numeric in scientific notation						
+		fbodybodyaccjerkmagiqr		numeric in scientific notation						
+		fbodybodyaccjerkmagentropy		numeric in scientific notation						
+		fbodybodyaccjerkmagmaxinds		numeric in scientific notation						
+		fbodybodyaccjerkmagmeanfreq		numeric in scientific notation						
+		fbodybodyaccjerkmagskewness		numeric in scientific notation						
+		fbodybodyaccjerkmagkurtosis		numeric in scientific notation						
+		fbodybodygyromagmean		numeric in scientific notation						
+		fbodybodygyromagstd		numeric in scientific notation						
+		fbodybodygyromagmad		numeric in scientific notation						
+		fbodybodygyromagmax		numeric in scientific notation						
+		fbodybodygyromagmin		numeric in scientific notation						
+		fbodybodygyromagsma		numeric in scientific notation						
+		fbodybodygyromagenergy		numeric in scientific notation						
+		fbodybodygyromagiqr		numeric in scientific notation						
+		fbodybodygyromagentropy		numeric in scientific notation						
+		fbodybodygyromagmaxinds		numeric in scientific notation						
+		fbodybodygyromagmeanfreq		numeric in scientific notation						
+		fbodybodygyromagskewness		numeric in scientific notation						
+		fbodybodygyromagkurtosis		numeric in scientific notation						
+		fbodybodygyrojerkmagmean		numeric in scientific notation						
+		fbodybodygyrojerkmagstd		numeric in scientific notation						
+		fbodybodygyrojerkmagmad		numeric in scientific notation						
+		fbodybodygyrojerkmagmax		numeric in scientific notation						
+		fbodybodygyrojerkmagmin		numeric in scientific notation						
+		fbodybodygyrojerkmagsma		numeric in scientific notation						
+		fbodybodygyrojerkmagenergy		numeric in scientific notation						
+		fbodybodygyrojerkmagiqr		numeric in scientific notation						
+		fbodybodygyrojerkmagentropy		numeric in scientific notation						
+		fbodybodygyrojerkmagmaxinds		numeric in scientific notation						
+		fbodybodygyrojerkmagmeanfreq		numeric in scientific notation						
+		fbodybodygyrojerkmagskewness		numeric in scientific notation						
+		fbodybodygyrojerkmagkurtosis		numeric in scientific notation						
+		angletbodyaccmeangravity		numeric in scientific notation						
+		angletbodyaccjerkmeangravitymean		numeric in scientific notation						
+		angletbodygyromeangravitymean		numeric in scientific notation						
+		angletbodygyrojerkmeangravitymean		numeric in scientific notation						
+		anglexgravitymean		numeric in scientific notation						
+		angleygravitymean		numeric in scientific notation						
+		anglezgravitymean		numeric in scientific notation						
+										
+COLUMN DEFINITIONS: df_subject_test & df_subject_train										
+		subjectcode		the code indicating the subject						
+										
+COLUMN DEFINITIONS: df_y_test & df_y_train										
+	the code indicating the activity for a given row in x_text.txt & x_train.txt									
+		activitycode		definitions found in df_activity_labels						
+										
+COLUMN DEFINITIONS: activity_labels										
+	the code indicating the description for the activity codes									
+		activitycode		the activity code						
+		activitydesc		the description of the activity code						
+			1	WALKING						
+			2	WALKING_UPSTAIRS						
+			3	WALKING_DOWNSTAIRS						
+			4	SITTING						
+			5	STANDING						
+			6	LAYING						
+										
+COLUMN DEFINITIONS: variable_names										
+	defines the columns for x_test.txt and x_train.txt									
+		columnnumber		the column number in x_text.txt and x_train.txt						
+		columndesc		the description of the column						
+										
+COLUMN DEFINITIONS: data_orig										
+	"Holds merged and binded data from ""X_test.txt"", ""y_test.txt"", ""subject_test.txt"", and ""subject_train.txt""."									
+		"same columns as ""df_x_test"" and ""df_x_train"""								
+										
+COLUMN DEFINITIONS: column_numbers_mean_std 										
+	"A VECTOR that holds the numbers of columns containing ""mean"" and ""std"" in their names."									
+		There are NO named columns as it is not a data frame								
+										
+COLUMN DEFINITIONS: df_mean_std										
+	"Holds only columns with ""mean"" and ""std"" in their names (and also ""subjectcode"" and ""activitycode needed for future steps)."									
+		tbodyaccmeanx		numeric in scientific notation						
+		tbodyaccmeany		numeric in scientific notation						
+		tbodyaccmeanz		numeric in scientific notation						
+		tbodyaccstdx		numeric in scientific notation						
+		tbodyaccstdy		numeric in scientific notation						
+		tbodyaccstdz		numeric in scientific notation						
+		tgravityaccmeanx		numeric in scientific notation						
+		tgravityaccmeany		numeric in scientific notation						
+		tgravityaccmeanz		numeric in scientific notation						
+		tgravityaccstdx		numeric in scientific notation						
+		tgravityaccstdy		numeric in scientific notation						
+		tgravityaccstdz		numeric in scientific notation						
+		tbodyaccjerkmeanx		numeric in scientific notation						
+		tbodyaccjerkmeany		numeric in scientific notation						
+		tbodyaccjerkmeanz		numeric in scientific notation						
+		tbodyaccjerkstdx		numeric in scientific notation						
+		tbodyaccjerkstdy		numeric in scientific notation						
+		tbodyaccjerkstdz		numeric in scientific notation						
+		tbodygyromeanx		numeric in scientific notation						
+		tbodygyromeany		numeric in scientific notation						
+		tbodygyromeanz		numeric in scientific notation						
+		tbodygyrostdx		numeric in scientific notation						
+		tbodygyrostdy		numeric in scientific notation						
+		tbodygyrostdz		numeric in scientific notation						
+		tbodygyrojerkmeanx		numeric in scientific notation						
+		tbodygyrojerkmeany		numeric in scientific notation						
+		tbodygyrojerkmeanz		numeric in scientific notation						
+		tbodygyrojerkstdx		numeric in scientific notation						
+		tbodygyrojerkstdy		numeric in scientific notation						
+		tbodygyrojerkstdz		numeric in scientific notation						
+		tbodyaccmagmean		numeric in scientific notation						
+		tbodyaccmagstd		numeric in scientific notation						
+		tgravityaccmagmean		numeric in scientific notation						
+		tgravityaccmagstd		numeric in scientific notation						
+		tbodyaccjerkmagmean		numeric in scientific notation						
+		tbodyaccjerkmagstd		numeric in scientific notation						
+		tbodygyromagmean		numeric in scientific notation						
+		tbodygyromagstd		numeric in scientific notation						
+		tbodygyrojerkmagmean		numeric in scientific notation						
+		tbodygyrojerkmagstd		numeric in scientific notation						
+		fbodyaccmeanx		numeric in scientific notation						
+		fbodyaccmeany		numeric in scientific notation						
+		fbodyaccmeanz		numeric in scientific notation						
+		fbodyaccstdx		numeric in scientific notation						
+		fbodyaccstdy		numeric in scientific notation						
+		fbodyaccstdz		numeric in scientific notation						
+		fbodyaccmeanfreqx		numeric in scientific notation						
+		fbodyaccmeanfreqy		numeric in scientific notation						
+		fbodyaccmeanfreqz		numeric in scientific notation						
+		fbodyaccjerkmeanx		numeric in scientific notation						
+		fbodyaccjerkmeany		numeric in scientific notation						
+		fbodyaccjerkmeanz		numeric in scientific notation						
+		fbodyaccjerkstdx		numeric in scientific notation						
+		fbodyaccjerkstdy		numeric in scientific notation						
+		fbodyaccjerkstdz		numeric in scientific notation						
+		fbodyaccjerkmeanfreqx		numeric in scientific notation						
+		fbodyaccjerkmeanfreqy		numeric in scientific notation						
+		fbodyaccjerkmeanfreqz		numeric in scientific notation						
+		fbodygyromeanx		numeric in scientific notation						
+		fbodygyromeany		numeric in scientific notation						
+		fbodygyromeanz		numeric in scientific notation						
+		fbodygyrostdx		numeric in scientific notation						
+		fbodygyrostdy		numeric in scientific notation						
+		fbodygyrostdz		numeric in scientific notation						
+		fbodygyromeanfreqx		numeric in scientific notation						
+		fbodygyromeanfreqy		numeric in scientific notation						
+		fbodygyromeanfreqz		numeric in scientific notation						
+		fbodyaccmagmean		numeric in scientific notation						
+		fbodyaccmagstd		numeric in scientific notation						
+		fbodyaccmagmeanfreq		numeric in scientific notation						
+		fbodybodyaccjerkmagmean		numeric in scientific notation						
+		fbodybodyaccjerkmagstd		numeric in scientific notation						
+		fbodybodyaccjerkmagmeanfreq		numeric in scientific notation						
+		fbodybodygyromagmean		numeric in scientific notation						
+		fbodybodygyromagstd		numeric in scientific notation						
+		fbodybodygyromagmeanfreq		numeric in scientific notation						
+		fbodybodygyrojerkmagmean		numeric in scientific notation						
+		fbodybodygyrojerkmagstd		numeric in scientific notation						
+		fbodybodygyrojerkmagmeanfreq		numeric in scientific notation						
+		angletbodyaccmeangravity		numeric in scientific notation						
+		angletbodyaccjerkmeangravitymean		numeric in scientific notation						
+		angletbodygyromeangravitymean		numeric in scientific notation						
+		angletbodygyrojerkmeangravitymean		numeric in scientific notation						
+		anglexgravitymean		numeric in scientific notation						
+		angleygravitymean		numeric in scientific notation						
+		anglezgravitymean		numeric in scientific notation						
+		activitycode		merged from df_activity_labels						
+		subjectcode		merged from df_subject_test & df_subject_train						
+										
+COLUMN DEFINITIONS: df_data_merged										
+	"holds identical data as ""data_mean_std"" PLUS the activity labels"									
+		first 88 columns identical to df_mean_std								
+		activitydesc		"descriptions from ""activity_labels"""						
+										
+COLUMN DEFINITIONS: df_data_output										
+	"holds averages of numeric columns in ""df_data_merged"" grouped by subject and activity"									
+		"columns are identical of ""df_data_merged"""								
